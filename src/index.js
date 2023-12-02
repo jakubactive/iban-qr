@@ -68,8 +68,16 @@ const init = async (orderId = "", amount = 0.0) => {
     if (!orderId) throw new Error("No orderId provided");
     if (amount <= 0) throw new Error("Amount must be greater than 0");
 
+    const config = window.IBAN_QR_CONFIG;
+    if (!config) {
+      alert("[IBAN_QR] no config provided.");
+      return;
+    }
+
+    if (!config.id) throw new Error("No id provided in config");
+
     const r = await fetch(
-      `https://metorikclone.vercel.app/api/callback/iban/getIban?id=656a7eced99b49df3f60ff53`,
+      `https://metorikclone.vercel.app/api/callback/iban/getIban?id=${config.id}`,
     );
     const data = await r.json();
     if (!r.ok) return;
