@@ -82,8 +82,6 @@ const init = async (orderId = "", amount = 0) => {
 
     const { name, iban, bic } = data;
 
-    console.log(typeof amount);
-
     const qrData = generateQrCode({
       name,
       iban,
