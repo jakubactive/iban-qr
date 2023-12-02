@@ -61,7 +61,7 @@ const _getTotal = () => {
   return parseFloat(_strParser(_parseDigits(ret)));
 };
 
-const init = async (orderId = "", amount = 0.0) => {
+const init = async (orderId = "", amount = 0) => {
   try {
     if (!orderId) throw new Error("No orderId provided");
     if (amount <= 0) throw new Error("Amount must be greater than 0");
@@ -81,6 +81,8 @@ const init = async (orderId = "", amount = 0.0) => {
     if (!r.ok) return;
 
     const { name, iban, bic } = data;
+
+    console.log(typeof amount);
 
     const qrData = generateQrCode({
       name,
