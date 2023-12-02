@@ -25,9 +25,7 @@ const _getOrderId = () => {
   }
   if (!ret) {
     const _orderIdEls = Array.from(
-      document.getElementsByClassName(
-        "woocommerce-order-overview__order order",
-      ),
+      document.getElementsByClassName("woocommerce-order-overview__order order")
     );
     if (_orderIdEls.length) {
       ret = _orderIdEls[0].textContent ?? "";
@@ -35,7 +33,7 @@ const _getOrderId = () => {
   }
   if (!ret) {
     const _orderIdEls = Array.from(
-      document.getElementsByClassName("woocommerce-order-details__order-order"),
+      document.getElementsByClassName("woocommerce-order-details__order-order")
     );
     if (_orderIdEls.length) {
       ret = _orderIdEls[0].textContent ?? "";
@@ -54,7 +52,7 @@ const _getTotal = () => {
   }
   if (!ret) {
     const _totalEls = Array.from(
-      document.getElementsByClassName("woocommerce-Price-amount amount"),
+      document.getElementsByClassName("woocommerce-Price-amount amount")
     );
     if (_totalEls.length) {
       ret = _totalEls[0].textContent ?? "";
@@ -76,7 +74,9 @@ const init = async (orderId = "", amount = 0.0) => {
 
     if (!config.id) throw new Error("No id provided in config");
 
-    const r = await fetch(`https://metorikclone.vercel.app/api/callback/iban/getIban?id=${config.id}`);
+    const r = await fetch(
+      `https://metorikclone.vercel.app/api/callback/iban/getIban?id=${config.id}`
+    );
     const data = await r.json();
     if (!r.ok) return;
 
@@ -87,6 +87,7 @@ const init = async (orderId = "", amount = 0.0) => {
       iban,
       bic,
       amount,
+      information: orderId,
     });
 
     const el = document.querySelector("#iban-qr");
@@ -98,7 +99,16 @@ const init = async (orderId = "", amount = 0.0) => {
       el.appendChild(newImg);
     }
   } catch (err) {
-    console.error("[IBAN_QR]", err.message);
+    console.error(
+      "[IBAN_QR]",
+      err.message,
+      "\n\n",
+      "orderId:",
+      orderId,
+      "\n\n",
+      "amount:",
+      amount
+    );
   }
 };
 init(_getOrderId(), _getTotal());

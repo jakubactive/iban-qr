@@ -1,0 +1,13 @@
+{
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.format": true
+  },
+  "editor.tabSize": 2,
+  "files.associations": {
+    "*.mdx": "markdown"
+  }
+}
