@@ -8,5 +8,5 @@ export default {
     file: "cdn/bundle.js",
     format: "cjs",
   },
-  plugins: [commonjs(), nodeResolve(), terser()],
+  plugins: [nodeResolve({ browser: true }), commonjs(), terser()],
 };
