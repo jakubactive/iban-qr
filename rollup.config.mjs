@@ -7,7 +7,7 @@ export default {
   input: "src/index.js",
   output: {
     file: "cdn/bundle.js",
-    format: "cjs",
+    format: "es",
   },
   plugins: [nodeResolve({ browser: true }), commonjs(), builtins(), terser()],
 };
