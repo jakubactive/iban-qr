@@ -69,11 +69,7 @@ const init = async (orderId = "", amount = 0.0) => {
     if (amount <= 0) throw new Error("Amount must be greater than 0");
 
     const r = await fetch(
-      `${
-        process.env.NODE_ENV === "production"
-          ? "https://smintkings-checkout.vercel.app"
-          : "http://localhost:3000"
-      }/api/callback/iban/getIban?id=656a7eced99b49df3f60ff53`,
+      `http://localhost:3000/api/callback/iban/getIban?id=656a7eced99b49df3f60ff53`,
     );
     const data = await r.json();
     if (!r.ok) return;
