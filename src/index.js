@@ -60,7 +60,7 @@ const _getTotal = () => {
       ret = _totalEls[0].textContent ?? "";
     }
   }
-  return _strParser(_parseDigits(ret));
+  return parseFloat(_strParser(_parseDigits(ret)));
 };
 
 const init = async (orderId = "", amount = 0.0) => {
@@ -76,9 +76,7 @@ const init = async (orderId = "", amount = 0.0) => {
 
     if (!config.id) throw new Error("No id provided in config");
 
-    const r = await fetch(
-      `https://metorikclone.vercel.app/api/callback/iban/getIban?id=${config.id}`,
-    );
+    const r = await fetch(`https://metorikclone.vercel.app/api/callback/iban/getIban?id=${config.id}`);
     const data = await r.json();
     if (!r.ok) return;
 
