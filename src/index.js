@@ -80,7 +80,7 @@ const init = async (orderId = "", amount = 0) => {
     const data = await r.json();
     if (!r.ok) return;
 
-    const { name, iban, bic } = data;
+    const { name, iban, bic, showDetails } = data;
 
     const qrData = generateQrCode({
       name,
@@ -103,9 +103,11 @@ const init = async (orderId = "", amount = 0) => {
 
       const qr = document.createElement("img");
       qr.src = await qr.toDataURL(qrData);
+      container.appendChild(qr);
 
-      const details = document.createElement("p");
-      details.innerHTML = `
+      if (showDetails) {
+        const details = document.createElement("p");
+        details.innerHTML = `
   Naam: 
   <b>${name}</b>
   <br />
@@ -118,9 +120,8 @@ const init = async (orderId = "", amount = 0) => {
   Omschrijving:
   <b>${orderId}</b>
 `;
-
-      container.appendChild(qr);
-      container.appendChild(details);
+        container.appendChild(details);
+      }
 
       el.appendChild(container);
     }
