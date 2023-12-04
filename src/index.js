@@ -94,9 +94,35 @@ const init = async (orderId = "", amount = 0) => {
     if (el.tagName === "img") {
       el.src = await qr.toDataURL(qrData);
     } else {
-      const newImg = document.createElement("img");
-      newImg.src = await qr.toDataURL(qrData);
-      el.appendChild(newImg);
+      const container = document.createElement("div");
+      container.id = "iban-qr-container";
+      container.style.display = "flex";
+      container.style.alignItems = "flex-start";
+      container.style.gap = "1.5em";
+      container.style.flexWrap = "wrap";
+
+      const qr = document.createElement("img");
+      qr.src = await qr.toDataURL(qrData);
+
+      const details = document.createElement("p");
+      details.innerHTML = `
+  Naam: 
+  <b>${name}</b>
+  <br />
+  IBAN:
+  <b>${iban}</b>
+  <br />
+  Bedrag:
+  <b>€${amount.toFixed(2)}</b>
+  <br />
+  Omschrijving:
+  <b>${orderId}</b>
+`;
+
+      container.appendChild(qr);
+      container.appendChild(details);
+
+      el.appendChild(container);
     }
   } catch (err) {
     console.error(
