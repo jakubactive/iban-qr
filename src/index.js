@@ -61,6 +61,54 @@ const _getTotal = () => {
   return parseFloat(_strParser(_parseDigits(ret)));
 };
 
+const _diplayQR = async (ibanData) => {
+  const { name, iban, bic, showDetails } = ibanData;
+
+  const qrData = generateQrCode({
+    name,
+    iban,
+    bic,
+    amount,
+    information: orderId,
+  });
+
+  const el = document.querySelector("#iban-qr");
+  if (el.tagName === "img") {
+    el.src = await qr.toDataURL(qrData);
+  } else {
+    const container = document.createElement("div");
+    container.id = "iban-qr-container";
+    container.style.display = "flex";
+    container.style.alignItems = "flex-start";
+    container.style.gap = "1.5em";
+    container.style.flexWrap = "wrap";
+
+    const qr = document.createElement("img");
+    qr.src = await qr.toDataURL(qrData);
+    container.appendChild(qr);
+
+    if (showDetails) {
+      const details = document.createElement("p");
+      details.innerHTML = `
+  Naam: 
+  <b>${name}</b>
+  <br />
+  IBAN:
+  <b>${iban}</b>
+  <br />
+  Bedrag:
+  <b>€${amount.toFixed(2)}</b>
+  <br />
+  Omschrijving:
+  <b>${orderId}</b>
+`;
+      container.appendChild(details);
+    }
+
+    el.appendChild(container);
+  }
+};
+
 const init = async (orderId = "", amount = 0) => {
   try {
     if (!orderId) throw new Error("No orderId provided");
@@ -74,57 +122,24 @@ const init = async (orderId = "", amount = 0) => {
 
     if (!config.id) throw new Error("No id provided in config");
 
+    let params = `id=${config.id}&`;
+    if (Array.isArray(config.id)) {
+      params = config.id.map((id) => "id=" + id).join("&");
+    }
+
     const r = await fetch(
-      `https://metorikclone.vercel.app/api/callback/iban/getIban?id=${config.id}`
+      "https://metorikclone.vercel.app/api/callback/iban/getIban?" + params
     );
     const data = await r.json();
     if (!r.ok) return;
 
-    const { name, iban, bic, showDetails } = data;
-
-    const qrData = generateQrCode({
-      name,
-      iban,
-      bic,
-      amount,
-      information: orderId,
-    });
-
-    const el = document.querySelector("#iban-qr");
-    if (el.tagName === "img") {
-      el.src = await qr.toDataURL(qrData);
-    } else {
-      const container = document.createElement("div");
-      container.id = "iban-qr-container";
-      container.style.display = "flex";
-      container.style.alignItems = "flex-start";
-      container.style.gap = "1.5em";
-      container.style.flexWrap = "wrap";
-
-      const qr = document.createElement("img");
-      qr.src = await qr.toDataURL(qrData);
-      container.appendChild(qr);
-
-      if (showDetails) {
-        const details = document.createElement("p");
-        details.innerHTML = `
-  Naam: 
-  <b>${name}</b>
-  <br />
-  IBAN:
-  <b>${iban}</b>
-  <br />
-  Bedrag:
-  <b>€${amount.toFixed(2)}</b>
-  <br />
-  Omschrijving:
-  <b>${orderId}</b>
-`;
-        container.appendChild(details);
-      }
-
-      el.appendChild(container);
+    if (Array.isArray(data)) {
+      const randomIndex = Math.floor(Math.random() * data.length);
+      await _diplayQR(data[randomIndex]);
+      return;
     }
+
+    await _diplayQR(data);
   } catch (err) {
     console.error(
       "[IBAN_QR]",
