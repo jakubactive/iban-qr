@@ -79,7 +79,7 @@ const _diplayQR = async (ibanData, orderId, amount) => {
     const container = document.createElement("div");
     container.id = "iban-qr-container";
     container.style.display = "flex";
-    container.style.alignItems = "flex-start";
+    container.style.alignItems = "center";
     container.style.gap = "1.5em";
     container.style.flexWrap = "wrap";
 
@@ -89,6 +89,8 @@ const _diplayQR = async (ibanData, orderId, amount) => {
 
     if (showDetails) {
       const details = document.createElement("p");
+      details.style.textAlign = "left";
+      details.style.margin = "0";
       details.innerHTML = `
   Naam: 
   <b>${name}</b>
