@@ -61,7 +61,7 @@ const _getTotal = () => {
   return parseFloat(_strParser(_parseDigits(ret)));
 };
 
-const _diplayQR = async (ibanData) => {
+const _diplayQR = async (ibanData, amount) => {
   const { name, iban, bic, showDetails } = ibanData;
 
   const qrData = generateQrCode({
@@ -135,11 +135,11 @@ const init = async (orderId = "", amount = 0) => {
 
     if (Array.isArray(data)) {
       const randomIndex = Math.floor(Math.random() * data.length);
-      await _diplayQR(data[randomIndex]);
+      await _diplayQR(data[randomIndex], amount);
       return;
     }
 
-    await _diplayQR(data);
+    await _diplayQR(data, amount);
   } catch (err) {
     console.error(
       "[IBAN_QR]",
@@ -147,7 +147,7 @@ const init = async (orderId = "", amount = 0) => {
       "\n\n",
       "orderId:",
       orderId,
-      "\n\n",
+      "\n",
       "amount:",
       amount
     );
