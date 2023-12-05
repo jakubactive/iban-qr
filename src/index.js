@@ -1,5 +1,5 @@
 const generateQrCode = require("sepa-payment-qr-code");
-const qr = require("qrcode");
+const qrcode = require("qrcode");
 
 const _parseDigits = (str) => {
   const arr = str?.match(/[\d,.]+/)?.filter((s) => s.trim()) ?? [];
@@ -74,7 +74,7 @@ const _diplayQR = async (ibanData, orderId, amount) => {
 
   const el = document.querySelector("#iban-qr");
   if (el.tagName === "img") {
-    el.src = await qr.toDataURL(qrData);
+    el.src = await qrcode.toDataURL(qrData);
   } else {
     const container = document.createElement("div");
     container.id = "iban-qr-container";
@@ -83,9 +83,9 @@ const _diplayQR = async (ibanData, orderId, amount) => {
     container.style.gap = "1.5em";
     container.style.flexWrap = "wrap";
 
-    const qr = document.createElement("img");
-    qr.src = await qr.toDataURL(qrData);
-    container.appendChild(qr);
+    const img = document.createElement("img");
+    img.src = await qrcode.toDataURL(qrData);
+    container.appendChild(img);
 
     if (showDetails) {
       const details = document.createElement("p");
