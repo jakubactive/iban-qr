@@ -69,7 +69,7 @@ const _diplayQR = async (ibanData, orderId, amount) => {
     iban,
     bic,
     amount,
-    information: orderId,
+    unstructuredReference: orderId,
   });
 
   const el = document.querySelector("#iban-qr");
